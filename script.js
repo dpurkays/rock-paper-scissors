@@ -12,9 +12,13 @@ var scissors_div = document.getElementById("scissors");
 
 var outcome_div = document.querySelector(".outcome > p");
 
-const R = "Rock";
-const P = "Paper";
-const S = "Scissors";
+const R = "rock";
+const P = "paper";
+const S = "scissors";
+
+const WIN = "win";
+const LOST = "lost";
+const DRAW = "draw";
 
 function getComputerChoice() {
     const CHOICES = [R, P, S];
@@ -24,33 +28,70 @@ function getComputerChoice() {
 
 function game(userChoice) {
     const COMPUTERCHOICE = getComputerChoice();
-    console.log("user " + userChoice);
-    console.log("comp " + COMPUTERCHOICE);
-
     getResults(userChoice, COMPUTERCHOICE);
-    
 }
 
 function winConditions(user, computer) {
+    const result = WIN;
     wins++;
     win_span.innerHTML = wins;
-    console.log("USER WINS " + wins);
 
-    outcome_div.innerHTML = user + " (You)" + " beats " + computer + " (Comp)" + " You win!";
+    updateOutcomeMsg(user, computer, result);
+    changeUserSelectionBorder(user, result);
 }
 
 function loseConditions(user, computer) {
+    const result = LOST;
+
     losses++;
     loss_span.innerHTML = losses;
-    console.log("LOSS " + losses);
-    outcome_div.innerHTML = computer + " (Comp)" + " beats " + user + "(You)" + " You lose!";
+
+    updateOutcomeMsg(user, computer, result);
+    changeUserSelectionBorder(user, result);
 }
 
 function drawConditions(user, computer) {
+    const result = DRAW;
+
     draws++;
     draw_span.innerHTML = draws;
-    console.log("DRAW " + draws);
-    outcome_div.innerHTML = user + " (You)" + " is the same as " + computer + "(Comp)" + " It's a Draw !";
+
+    updateOutcomeMsg(user, computer, result);
+    changeUserSelectionBorder(user, result);
+}
+
+function updateOutcomeMsg(user, computer, result) {
+    if(result == DRAW) {
+        outcome_div.innerHTML = user + " (You)" + " vs " + computer + " (Comp). " + "It's a draw!";
+
+    } else {
+    outcome_div.innerHTML = user + " (You)" + " vs " + computer + " (Comp). " + "You " + result + "!";
+    }
+}
+
+function changeUserSelectionBorder(user, result) {
+    var resultColor = getResultColor(result);
+    
+    document.getElementById(user).classList.add(resultColor);
+    setTimeout(function () {
+        document.getElementById(user).classList.remove(resultColor);
+    }, 1000);
+}
+
+function getResultColor(result) {
+    var resultColor;
+    switch (result) {
+        case WIN:
+            resultColor = "green-border";
+            break;
+        case LOST:
+            resultColor = "red-border";
+            break;
+        case DRAW:
+            resultColor = "gray-border";
+            break;
+    }
+    return resultColor;
 }
 
 function getResults(userChoice, computerChoice) {
