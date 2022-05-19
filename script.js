@@ -10,9 +10,11 @@ var rock_div = document.getElementById("rock");
 var paper_div = document.getElementById("paper");
 var scissors_div = document.getElementById("scissors");
 
-const R = "rock";
-const P = "paper";
-const S = "scissors";
+var outcome_div = document.querySelector(".outcome > p");
+
+const R = "Rock";
+const P = "Paper";
+const S = "Scissors";
 
 function getComputerChoice() {
     const CHOICES = [R, P, S];
@@ -25,30 +27,48 @@ function game(userChoice) {
     console.log("user " + userChoice);
     console.log("comp " + COMPUTERCHOICE);
 
-    checkWinConditions(userChoice, COMPUTERCHOICE);
+    getResults(userChoice, COMPUTERCHOICE);
     
 }
 
+function winConditions(user, computer) {
+    wins++;
+    win_span.innerHTML = wins;
+    console.log("USER WINS " + wins);
 
-function checkWinConditions(userChoice, computerChoice) {
+    outcome_div.innerHTML = user + " (You)" + " beats " + computer + " (Comp)" + " You win!";
+}
+
+function loseConditions(user, computer) {
+    losses++;
+    loss_span.innerHTML = losses;
+    console.log("LOSS " + losses);
+    outcome_div.innerHTML = computer + " (Comp)" + " beats " + user + "(You)" + " You lose!";
+}
+
+function drawConditions(user, computer) {
+    draws++;
+    draw_span.innerHTML = draws;
+    console.log("DRAW " + draws);
+    outcome_div.innerHTML = user + " (You)" + " is the same as " + computer + "(Comp)" + " It's a Draw !";
+}
+
+function getResults(userChoice, computerChoice) {
     switch (userChoice + computerChoice) {
         case R + S:
         case S + P:
         case P + R:
-            wins++;
-            console.log("USER WINS " + wins);
+            winConditions(userChoice, computerChoice);
             break;
         case S + R:
         case P + S:
         case R + P:
-            losses++;
-            console.log("LOSS " + losses);
+            loseConditions(userChoice, computerChoice);
             break;
         case R + R:
         case P + P:
         case S + S:
-            draws++;
-            console.log("DRAW " + draws);
+            drawConditions(userChoice, computerChoice);
             break;
     }
 }
